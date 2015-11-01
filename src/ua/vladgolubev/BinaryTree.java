@@ -1,5 +1,7 @@
 package ua.vladgolubev;
 
+import java.util.ArrayList;
+
 public class BinaryTree {
     Node root;
 
@@ -32,40 +34,46 @@ public class BinaryTree {
         }
     }
 
-    public void inOrderTraverseTree() {
-        inOrderTraverseTree(root);
+    public ArrayList<Node> inOrderTraverseTree() {
+        return inOrderTraverseTree(root);
     }
 
-    public void inOrderTraverseTree(Node focusNode) {
+    public ArrayList<Node> inOrderTraverseTree(Node focusNode) {
+        ArrayList<Node> nodes = new ArrayList<>();
         if (focusNode != null) {
-            inOrderTraverseTree(focusNode.leftChild);
-            System.out.println(focusNode);
-            inOrderTraverseTree(focusNode.rightChild);
+            nodes.addAll(inOrderTraverseTree(focusNode.leftChild));
+            nodes.add(focusNode);
+            nodes.addAll(inOrderTraverseTree(focusNode.rightChild));
         }
+        return nodes;
     }
 
-    public void preOrderTraverseTree() {
-        preOrderTraverseTree(root);
+    public ArrayList<Node> preOrderTraverseTree() {
+        return preOrderTraverseTree(root);
     }
 
-    public void preOrderTraverseTree(Node focusNode) {
+    public ArrayList<Node> preOrderTraverseTree(Node focusNode) {
+        ArrayList<Node> nodes = new ArrayList<>();
         if (focusNode != null) {
-            System.out.println(focusNode);
-            preOrderTraverseTree(focusNode.leftChild);
-            preOrderTraverseTree(focusNode.rightChild);
+            nodes.add(focusNode);
+            nodes.addAll(preOrderTraverseTree(focusNode.leftChild));
+            nodes.addAll(preOrderTraverseTree(focusNode.rightChild));
         }
+        return nodes;
     }
 
-    public void postOrderTraverseTree() {
-        postOrderTraverseTree(root);
+    public ArrayList<Node> postOrderTraverseTree() {
+        return postOrderTraverseTree(root);
     }
 
-    public void postOrderTraverseTree(Node focusNode) {
+    public ArrayList<Node> postOrderTraverseTree(Node focusNode) {
+        ArrayList<Node> nodes = new ArrayList<>();
         if (focusNode != null) {
-            postOrderTraverseTree(focusNode.leftChild);
-            postOrderTraverseTree(focusNode.rightChild);
-            System.out.println(focusNode);
+            nodes.addAll(postOrderTraverseTree(focusNode.leftChild));
+            nodes.addAll(postOrderTraverseTree(focusNode.rightChild));
+            nodes.add(focusNode);
         }
+        return nodes;
     }
 
     public Node findNode(double value) {
@@ -187,6 +195,35 @@ public class BinaryTree {
             System.out.println(root.value);
         }
         printTreePart(root.leftChild, level + 1);
+    }
+
+    public int height() {
+        return height(root);
+    }
+
+    private int height(Node node) {
+        if (node == null) {
+            return 0;
+        } else {
+            return 1 +
+                    Math.max(height(node.leftChild),
+                            height(node.rightChild));
+        }
+    }
+
+    public int size() {
+        return size(root);
+    }
+
+    private int size(Node node) {
+        int size = 1;
+        if (node.leftChild != null) {
+            size += size(node.leftChild);
+        }
+        if (node.rightChild != null) {
+            size += size(node.rightChild);
+        }
+        return size;
     }
 }
 
